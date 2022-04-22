@@ -1,0 +1,10 @@
+# IDE
+.idea
+
+# NPM
+node_modules
+npm-error.log
+
+# Artifacts
+coverage
+lib

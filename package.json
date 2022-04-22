@@ -1,0 +1,65 @@
+{
+  "name": "@loltech/sms-splitter",
+  "version": "1.0.0",
+  "description": "Typescript library for generating configurable random passwords.",
+  "keywords": [
+    "configurable",
+    "random",
+    "paswword",
+    "generator"
+  ],
+  "files": [
+    "/lib/**/*",
+    "/src/**/*"
+  ],
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/mjs/index.js",
+  "types": "./lib/types/index.d.ts",
+  "scripts": {
+    "build": "npm run build:cjs && npm run build:mjs && npm run build:d",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build:mjs": "tsc --project tsconfig.mjs.json",
+    "build:d": "tsc --project tsconfig.d.json",
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "codecov": "codecov",
+    "prepare": "yarn run build",
+    "prepublishOnly": "yarn run test",
+    "postversion": "git push && git push --tags"
+  },
+  "author": {
+    "name": "Vlad Pascu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LoLFactor/password-generator"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "codecov": "^3.8.3",
+    "jest": "^27.5.1",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.6.3"
+  },
+  "jest": {
+    "rootDir": "src",
+    "testEnvironment": "node",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "testRegex": ".*\\.test\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "js"
+    ],
+    "coverageDirectory": "../coverage",
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageReporters": [
+      "cobertura",
+      "text"
+    ]
+  }
+}
