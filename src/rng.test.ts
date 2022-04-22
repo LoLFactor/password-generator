@@ -31,6 +31,17 @@ describe('RNG', () => {
         expect(rng.generateInteger(-20, 30)).toBeLessThan(30);
       }
     });
+
+    it('generates random integers using the supplied function', () => {
+      const generator = jest.fn((min: number, max: number) => min + max);
+      const rng = new RNG(generator);
+      const integer = rng.generateInteger(-20, 30);
+
+      expect.assertions(2);
+
+      expect(generator).toBeCalledWith(-20, 30);
+      expect(integer).toBe(10);
+    });
   });
 
   describe('generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[]', () => {
