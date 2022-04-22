@@ -57,5 +57,17 @@ describe('PasswordGenerator', () => {
       expect(typeof password).toBe('string');
       expect(password.length).toBe(1337);
     });
+
+    it('generates unique passwords', () => {
+      const passwords: string[] = [];
+      for (let i = 0; i < ROUNDS; i++) {
+        passwords.push(generator.generate());
+      }
+
+      expect.assertions(1);
+
+      // Expect all generated passwords to have their own index -> be unique
+      expect(passwords.some((password, index, array) => index !== array.indexOf(password))).toBe(false);
+    });
   });
 });
