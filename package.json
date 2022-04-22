@@ -23,8 +23,8 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "codecov": "codecov",
-    "prepare": "yarn run build",
-    "prepublishOnly": "yarn run test",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test",
     "postversion": "git push && git push --tags"
   },
   "author": {
