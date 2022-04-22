@@ -1,3 +1,4 @@
+// TODO: Actually use the generator for creating numbers, dummy!
 function generateSeeds(totalLength: number, seedCount: number): number[] {
   const seeds = [];
 
@@ -53,6 +54,18 @@ class RNG {
    * @param generator A random integer generator function. Defaults to a convenience function. Should be replaced with something better.
    */
   constructor(protected generator: IntegerGenerator = mathJsIntGenerator) {}
+
+  /**
+   * Proxy function. Uses the generator supplied to the constructor.
+   *
+   * @param minInclusive Minimum integer to generate (inclusive).
+   * @param maxExclusive Maximum integer to generate (exclusive).
+   *
+   * @return A number x, where minInclusive <= x < maxExclusive.
+   */
+  public generateInteger(minInclusive: number, maxExclusive: number): number {
+    return this.generator(minInclusive, maxExclusive);
+  }
 
   /**
    * Given a total length and the number of elements to select from, returns an array containing the counts for each

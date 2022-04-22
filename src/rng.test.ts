@@ -17,6 +17,22 @@ describe('RNG', () => {
     expect(rng).toBeInstanceOf(RNG);
   });
 
+  describe('generateInteger(minInclusive: number, maxExclusive: number): number', () => {
+    const ROUNDS = 10000;
+
+    it('generates random integers using the default function', () => {
+      const rng = new RNG();
+
+      expect.assertions(ROUNDS * 2 + 1);
+
+      expect(typeof rng.generateInteger(0, 5)).toBe('number');
+      for (let i = 0; i < ROUNDS; i++) {
+        expect(rng.generateInteger(-20, 30)).toBeGreaterThanOrEqual(-20);
+        expect(rng.generateInteger(-20, 30)).toBeLessThan(30);
+      }
+    });
+  });
+
   describe('generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[]', () => {
     const rng = new RNG();
     const ROUNDS = 10000;
