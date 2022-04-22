@@ -1,6 +1,6 @@
 import { PasswordGenerator } from './generator';
 import { RNG } from './rng';
-import { PasswordChecker } from '../test/utils';
+import { TESTING_ROUNDS, PasswordChecker } from '../test/utils';
 
 describe('PasswordGenerator', () => {
   it('instantiates with defaults', () => {
@@ -39,7 +39,6 @@ describe('PasswordGenerator', () => {
 
   describe('generate(length: number, distribution: number[]): string', () => {
     const generator = new PasswordGenerator();
-    const ROUNDS = 10000;
 
     it('generates passwords of default length (16)', () => {
       const password = generator.generate();
@@ -61,7 +60,7 @@ describe('PasswordGenerator', () => {
 
     it('generates unique passwords', () => {
       const passwords: string[] = [];
-      for (let i = 0; i < ROUNDS; i++) {
+      for (let i = 0; i < TESTING_ROUNDS; i++) {
         passwords.push(generator.generate());
       }
 
@@ -77,9 +76,9 @@ describe('PasswordGenerator', () => {
       const generator = new PasswordGenerator(PasswordGenerator.DEFAULT_ALPHABETS);
       const checker = new PasswordChecker(PasswordGenerator.DEFAULT_ALPHABETS);
 
-      expect.assertions(ROUNDS);
+      expect.assertions(TESTING_ROUNDS);
 
-      for (let i = 0; i < ROUNDS; i++) {
+      for (let i = 0; i < TESTING_ROUNDS; i++) {
         const length = rng.generateInteger(15, 100);
         const distribution = rng.generateDistribution(length, generator.getAlphabetCount());
         const password = generator.generate(length, distribution);

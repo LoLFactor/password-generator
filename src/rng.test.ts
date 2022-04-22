@@ -1,4 +1,5 @@
 import { RNG } from './';
+import { TESTING_ROUNDS } from '../test/utils';
 
 describe('RNG', () => {
   it('instantiates with a default', () => {
@@ -18,15 +19,13 @@ describe('RNG', () => {
   });
 
   describe('generateInteger(minInclusive: number, maxExclusive: number): number', () => {
-    const ROUNDS = 10000;
-
     it('generates random integers using the default function', () => {
       const rng = new RNG();
 
-      expect.assertions(ROUNDS * 2 + 1);
+      expect.assertions(TESTING_ROUNDS * 2 + 1);
 
       expect(typeof rng.generateInteger(0, 5)).toBe('number');
-      for (let i = 0; i < ROUNDS; i++) {
+      for (let i = 0; i < TESTING_ROUNDS; i++) {
         expect(rng.generateInteger(-20, 30)).toBeGreaterThanOrEqual(-20);
         expect(rng.generateInteger(-20, 30)).toBeLessThan(30);
       }
@@ -46,7 +45,6 @@ describe('RNG', () => {
 
   describe('generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[]', () => {
     const rng = new RNG();
-    const ROUNDS = 10000;
 
     it('returns the correct number of integers', () => {
       const result = rng.generateDistribution(10, 5);
@@ -61,9 +59,9 @@ describe('RNG', () => {
     });
 
     it('returns integers whose sum is equal to totalLength', () => {
-      expect.assertions(ROUNDS);
+      expect.assertions(TESTING_ROUNDS);
 
-      for (let round = 0; round < ROUNDS; round++) {
+      for (let round = 0; round < TESTING_ROUNDS; round++) {
         const totalLength = Math.floor(Math.random() * 100) + 1;
         const elementCount = Math.floor(Math.random() * Math.min(20, totalLength)) + 1;
         const result = rng.generateDistribution(totalLength, elementCount);
@@ -73,9 +71,9 @@ describe('RNG', () => {
     });
 
     it('optionally return an array of integers with no zeroes', () => {
-      expect.assertions(ROUNDS);
+      expect.assertions(TESTING_ROUNDS);
 
-      for (let round = 0; round < ROUNDS; round++) {
+      for (let round = 0; round < TESTING_ROUNDS; round++) {
         const totalLength = Math.floor(Math.random() * 100) + 1;
         const elementCount = Math.floor(Math.random() * Math.min(20, totalLength)) + 1;
         const result = rng.generateDistribution(totalLength, elementCount, true);

@@ -1,3 +1,5 @@
+export const TESTING_ROUNDS = parseInt(process.env.PASSWORD_GENERATOR_TESTING_ROUNDS, 10) || 10000;
+
 export class PasswordChecker {
   constructor(protected alphabets: string[]) {}
 
