@@ -1,6 +1,22 @@
 import { RNG } from './';
 
 describe('RNG', () => {
+  it('instantiates with a default', () => {
+    const rng = new RNG();
+
+    expect.assertions(1);
+
+    expect(rng).toBeInstanceOf(RNG);
+  });
+
+  it('instantiates with a custom generator', () => {
+    const rng = new RNG((min, max) => min + max);
+
+    expect.assertions(1);
+
+    expect(rng).toBeInstanceOf(RNG);
+  });
+
   describe('generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[]', () => {
     const rng = new RNG();
     const ROUNDS = 10000;
