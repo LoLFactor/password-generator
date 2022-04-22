@@ -40,6 +40,15 @@ describe('PasswordGenerator', () => {
     const generator = new PasswordGenerator();
     const ROUNDS = 10000;
 
+    it('generates passwords of default length (16)', () => {
+      const password = generator.generate();
+
+      expect.assertions(2);
+
+      expect(typeof password).toBe('string');
+      expect(password.length).toBe(16);
+    });
+
     it('generates passwords of the correct length', () => {
       const password = generator.generate(1337);
 

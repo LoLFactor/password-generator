@@ -18,7 +18,7 @@ class PasswordGenerator {
   }
 
   public generate(
-    length: number,
+    length: number = 16,
     distribution: number[] = this.rng.generateDistribution(length, this.getAlphabetCount()),
   ): string {
     const characters: string[] = [];
