@@ -31,7 +31,7 @@ function generateNonZeroSeeds(totalLength: number, seedCount: number, generator:
   return seeds;
 }
 
-type IntegerGenerator = (minInclusive: number, maxExclusive: number) => number;
+export type IntegerGenerator = (minInclusive: number, maxExclusive: number) => number;
 
 /**
  * Default random number generator. Here for convenience.
