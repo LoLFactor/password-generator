@@ -1,5 +1,3 @@
-type IntegerGenerator = (minInclusive: number, maxExclusive: number) => number;
-
 function generateSeeds(totalLength: number, seedCount: number): number[] {
   const seeds = [];
 
@@ -33,13 +31,37 @@ function generateNonZeroSeeds(totalLength: number, seedCount: number): number[] 
   return seeds;
 }
 
-export function jsMathGenerator(minInclusive, maxExclusive): number {
-  return Math.floor(Math.random() * maxExclusive - minInclusive) + minInclusive;
+type IntegerGenerator = (minInclusive: number, maxExclusive: number) => number;
+
+/**
+ * Default random number generator. Here for convenience.
+ * Can (and should) be replaced with something like randomInt from the crypto package.
+ * In actual fact, it's based on the behaviour of the that same function.
+ *
+ * @param minInclusive Minimum integer to generate (inclusive).
+ * @param maxExclusive Maximum integer to generate (exclusive).
+ *
+ * @return A number x, where minInclusive <= x < maxExclusive.
+ */
+function mathJsIntGenerator(minInclusive: number, maxExclusive: number): number {
+  return Math.floor(Math.random() * (maxExclusive - minInclusive)) + minInclusive;
 }
 
-export class RNG {
-  constructor(protected generator: IntegerGenerator = jsMathGenerator) {}
+class RNG {
+  /**
+   *
+   * @param generator A random integer generator function. Defaults to a convenience function. Should be replaced with something better.
+   */
+  constructor(protected generator: IntegerGenerator = mathJsIntGenerator) {}
 
+  /**
+   * Given a total length and the number of elements to select from, returns an array containing the counts for each
+   * element, totaling the length.
+   *
+   * @param totalLength The sum of all the counts.
+   * @param elementCount The number of elements to generate counts for.
+   * @param atLeastOneOfEach Whether all counts should be greater than 0.
+   */
   public generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[] {
     // Create "seeds" for the following process
     const seeds = atLeastOneOfEach ? generateNonZeroSeeds(totalLength, elementCount - 1) : generateSeeds(totalLength, elementCount - 1);
@@ -61,3 +83,5 @@ export class RNG {
     return counts.slice(0, -1);
   }
 }
+
+export { mathJsIntGenerator, RNG };
