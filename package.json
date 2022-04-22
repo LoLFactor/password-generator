@@ -22,7 +22,6 @@
     "build:d": "tsc --project tsconfig.d.json",
     "test": "jest",
     "test:coverage": "jest --coverage",
-    "codecov": "codecov",
     "prepare": "npm run build",
     "prepublishOnly": "npm run test",
     "postversion": "git push && git push --tags"
@@ -37,7 +36,6 @@
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^27.4.1",
-    "codecov": "^3.8.3",
     "jest": "^27.5.1",
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.3"
