@@ -1,5 +1,6 @@
 import { PasswordGenerator } from './generator';
 import { RNG } from './rng';
+import { PasswordChecker } from '../test/utils';
 
 describe('PasswordGenerator', () => {
   it('instantiates with defaults', () => {
@@ -68,6 +69,23 @@ describe('PasswordGenerator', () => {
 
       // Expect all generated passwords to have their own index -> be unique
       expect(passwords.some((password, index, array) => index !== array.indexOf(password))).toBe(false);
+    });
+
+    // TODO: Handle empty supplied distribution
+    it('generates passwords that respect the supplied distribution', () => {
+      const rng = new RNG();
+      const generator = new PasswordGenerator(PasswordGenerator.DEFAULT_ALPHABETS);
+      const checker = new PasswordChecker(PasswordGenerator.DEFAULT_ALPHABETS);
+
+      expect.assertions(ROUNDS);
+
+      for (let i = 0; i < ROUNDS; i++) {
+        const length = rng.generateInteger(15, 100);
+        const distribution = rng.generateDistribution(length, generator.getAlphabetCount());
+        const password = generator.generate(length, distribution);
+
+        expect(checker.respectsDistribution(password, distribution)).toBe(true);
+      }
     });
   });
 });

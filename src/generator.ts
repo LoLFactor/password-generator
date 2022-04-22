@@ -21,14 +21,29 @@ class PasswordGenerator {
     length: number = 16,
     distribution: number[] = this.rng.generateDistribution(length, this.getAlphabetCount()),
   ): string {
+    // The elements that will make up the password
     const characters: string[] = [];
+    // Create a copy of the distribution, since we need to alter it
+    const workingDistribution = [...distribution];
 
     while (characters.length < length) {
+      // Roll the dice which alphabet should be used for this character
       const alphabetIndex = this.rng.generateInteger(0, this.getAlphabetCount());
+
+      // If that alphabet has already been used up for this password, skip ahead to the next iteration
+      if (workingDistribution[alphabetIndex] === 0) {
+        continue;
+      }
+
+      // If it hasn't, get the alphabet
       const alphabet = this.alphabets[alphabetIndex];
+      // Roll the dice which character of the alphabet should be used
       const element = alphabet[this.rng.generateInteger(0, alphabet.length)];
 
+      // Add the character to the password
       characters.push(element);
+      // And decrease this alphabet's character distribution count by 1
+      workingDistribution[alphabetIndex]--;
     }
 
     return characters.join('');
