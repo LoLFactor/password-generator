@@ -6,19 +6,24 @@ export class PasswordChecker {
   public respectsDistribution(password: string, distribution: number[]): boolean {
     // The password respects the distribution is it contains the specified number of characters from each alphabet
     return this.alphabets.reduce((isValid, alphabet, alphabetIndex) => {
-      return isValid && this.containsCountOfAlphabet(password, distribution[alphabetIndex], alphabet);
+      return isValid && distribution[alphabetIndex] === this.getUsedCharactersOfAlphabet(password, alphabet);
     }, true);
   }
 
-  protected containsCountOfAlphabet(password: string, count: number, alphabet: string): boolean {
+  public usesAllAlphabets(password: string): boolean {
+    // The password uses all alphabets if the character count from each is > 0
+    return this.alphabets.reduce((usesAll, alphabet) => {
+      return usesAll && this.getUsedCharactersOfAlphabet(password, alphabet) > 0;
+    }, true);
+  }
+
+  protected getUsedCharactersOfAlphabet(password: string, alphabet: string): number {
     // Split password into characters
     const characters = password.split('');
 
-    // Obtain count of character in password from this alphabet
-    const actualCount = characters.reduce((actualCount, character) => {
+    // Return count of characters in password from this alphabet
+    return characters.reduce((actualCount, character) => {
       return actualCount + (alphabet.indexOf(character) > -1 ? 1 : 0);
     }, 0);
-
-    return count === actualCount;
   }
 }

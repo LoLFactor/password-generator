@@ -78,6 +78,17 @@ class PasswordGenerator {
 
     return characters.join('');
   }
+
+  /**
+   * Generate a password using at least one character from each of the registered alphabets.
+   *
+   * @param length The length of the generated password. Defaults to 16.
+   */
+  public generateWithAllAlphabets(length: number = 16) {
+    const distribution = this.rng.generateDistribution(length, this.getAlphabetCount(), true);
+
+    return this.generate(length, distribution);
+  }
 }
 
 export { PasswordGenerator };

@@ -1,6 +1,5 @@
-import { PasswordGenerator } from './generator';
-import { RNG } from './rng';
-import { TESTING_ROUNDS, PasswordChecker } from '../test/utils';
+import { PasswordGenerator, RNG } from './';
+import { PasswordChecker, TESTING_ROUNDS } from '../test/utils';
 
 describe('PasswordGenerator', () => {
   it('instantiates with defaults', () => {
@@ -52,9 +51,8 @@ describe('PasswordGenerator', () => {
     it('generates passwords of the correct length', () => {
       const password = generator.generate(1337);
 
-      expect.assertions(2);
+      expect.assertions(1);
 
-      expect(typeof password).toBe('string');
       expect(password.length).toBe(1337);
     });
 
@@ -84,6 +82,39 @@ describe('PasswordGenerator', () => {
         const password = generator.generate(length, distribution);
 
         expect(checker.respectsDistribution(password, distribution)).toBe(true);
+      }
+    });
+  });
+
+  describe('generateWithAllAlphabets(length: number, distribution: number[]): string', () => {
+    const generator = new PasswordGenerator();
+
+    it('generates passwords of default length (16)', () => {
+      const password = generator.generateWithAllAlphabets();
+
+      expect.assertions(2);
+
+      expect(typeof password).toBe('string');
+      expect(password.length).toBe(16);
+    });
+
+    it('generates passwords of the correct length', () => {
+      const password = generator.generateWithAllAlphabets(1337);
+
+      expect.assertions(1);
+
+      expect(password.length).toBe(1337);
+    });
+
+    it('generates passwords using at least one character from each alphabet', () => {
+      const checker = new PasswordChecker(PasswordGenerator.DEFAULT_ALPHABETS);
+
+      expect.assertions(TESTING_ROUNDS);
+
+      for (let i = 0; i < TESTING_ROUNDS; i++) {
+        const password = generator.generateWithAllAlphabets(generator.getAlphabetCount());
+
+        expect(checker.usesAllAlphabets(password)).toBe(true);
       }
     });
   });
