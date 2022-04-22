@@ -16,6 +16,23 @@ class PasswordGenerator {
   public getAlphabetCount(): number {
     return this.alphabets.length;
   }
+
+  public generate(
+    length: number,
+    distribution: number[] = this.rng.generateDistribution(length, this.getAlphabetCount()),
+  ): string {
+    const characters: string[] = [];
+
+    while (characters.length < length) {
+      const alphabetIndex = this.rng.generateInteger(0, this.getAlphabetCount());
+      const alphabet = this.alphabets[alphabetIndex];
+      const element = alphabet[this.rng.generateInteger(0, alphabet.length)];
+
+      characters.push(element);
+    }
+
+    return characters.join('');
+  }
 }
 
 export { PasswordGenerator };
