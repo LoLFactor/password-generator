@@ -1,5 +1,5 @@
 {
-  "name": "@loltech/sms-splitter",
+  "name": "@llftr/password-generator",
   "version": "1.0.0",
   "description": "Typescript library for generating configurable random passwords.",
   "keywords": [
