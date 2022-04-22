@@ -1,16 +1,15 @@
-// TODO: Actually use the generator for creating numbers, dummy!
-function generateSeeds(totalLength: number, seedCount: number): number[] {
+function generateSeeds(totalLength: number, seedCount: number, generator: IntegerGenerator): number[] {
   const seeds = [];
 
   // Add random number between 0 and totalLength (inclusive) to array
   for (let i = 0; i < seedCount; i++) {
-    seeds.push(Math.floor(Math.random() * (totalLength + 1)));
+    seeds.push(generator(0, totalLength + 1));
   }
 
   return seeds;
 }
 
-function generateNonZeroSeeds(totalLength: number, seedCount: number): number[] {
+function generateNonZeroSeeds(totalLength: number, seedCount: number, generator: IntegerGenerator): number[] {
   const seeds = [];
 
   // We change the logic here.
@@ -18,7 +17,7 @@ function generateNonZeroSeeds(totalLength: number, seedCount: number): number[] 
   // we need to generate unique numbers. That way, no difference between any 2 of them will ever be less than 1.
   while (seeds.length < seedCount) {
     // Generate a number between 1 (inclusive) and totalLength (exclusive)
-    const seed = Math.floor(Math.random() * (totalLength - 1) + 1);
+    const seed = generator(1, totalLength);
 
     // If it's already in the array, try again
     if (seeds.indexOf(seed) > -1) {
@@ -77,7 +76,9 @@ class RNG {
    */
   public generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[] {
     // Create "seeds" for the following process
-    const seeds = atLeastOneOfEach ? generateNonZeroSeeds(totalLength, elementCount - 1) : generateSeeds(totalLength, elementCount - 1);
+    const seeds = atLeastOneOfEach ?
+      generateNonZeroSeeds(totalLength, elementCount - 1, this.generator) :
+      generateSeeds(totalLength, elementCount - 1, this.generator);
 
     // Sort the seeds so that the final array is also sorted
     seeds.sort((a, b) => a - b);
