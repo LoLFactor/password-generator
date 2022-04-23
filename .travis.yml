@@ -6,3 +6,9 @@ after_success:
   - curl -Os https://uploader.codecov.io/latest/linux/codecov
   - chmod +x codecov
   - ./codecov -t ${CODECOV_TOKEN}
+deploy:
+  edge: true
+  provider: npm
+  on:
+    branch: master
+    tags: true
