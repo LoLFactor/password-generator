@@ -86,7 +86,7 @@ describe('PasswordGenerator', () => {
     });
   });
 
-  describe('generateWithAllAlphabets(length: number, distribution: number[]): string', () => {
+  describe('generateWithAllAlphabets(length: number): string', () => {
     const generator = new PasswordGenerator();
 
     it('generates passwords of default length (16)', () => {
