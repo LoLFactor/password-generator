@@ -84,7 +84,7 @@ class PasswordGenerator {
    *
    * @param length The length of the generated password. Defaults to 16.
    */
-  public generateWithAllAlphabets(length: number = 16) {
+  public generateWithAllAlphabets(length: number = 16): string {
     const distribution = this.rng.generateDistribution(length, this.getAlphabetCount(), true);
 
     return this.generate(length, distribution);
