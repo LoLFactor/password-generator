@@ -84,10 +84,10 @@ such:
 type IntegerGenerator = (minInclusive: number, maxExclusive: number) => number;
 ```
 
-This matches the signature of `crypto.randomInt`, which is what you should be using, if you can. Wanting this package to
-also be usable on the web without having to resort to polyfills and such, the default `RNG` uses an existing convenience
-function that relies on the `Math.random()` function. It's [more than sufficient](#are-the-passwords-actually-that-random-though)
-for most cases.
+This matches the signature of `crypto.randomInt()`, which is what you should be using, if you can. Wanting this package
+to also be usable on the web without having to resort to polyfills and such, the default `RNG` uses an existing
+convenience function that relies on the `Math.random()` function.
+It's [more than sufficient](#are-the-passwords-actually-that-random-though) for most cases.
 
 As seen above, you can supply your own function to it, or if you want, you could just import `RNGInterface` and just
 create your own custom implementation and pass that to `PasswordManager`.
@@ -136,27 +136,52 @@ The main class of this package. It's constructor takes 2 parameters, both option
 
 - `alphabets: string[]` - An array of strings from which the passwords will be generated. Defaults
   to `PasswordGenerator.DEFAULT_ALPHABETS`.
-- `rng: RNG` - An `RNG` class instance. Defaults to an instance using the built-in `Math.random` method of generating
+- `rng: RNG` - An `RNG` class instance. Defaults to an instance using the built-in `Math.random()` method of generating
   integers.
 
 #### DEFAULT_ALPHABETS constant
 
 The default alphabets used are lowercase alpha, uppercase alpha, digits and symbols. You can pass in an array that adds
-to this one, or a different one entirely. Whatever you want, so long as it's an array os strings.
+to this one, or a different one entirely. Whatever you want, so long as it's an array of strings.
 
 #### getAlphabetCount(): number
 
-This method return the number os alphabets on this particular instance. Useful for generating custom distributions.
+This method return the number of alphabets on this particular instance. Useful for generating custom distributions.
 
 #### public generate(length: number, distribution: number[]): string
 
 The main method of this class. Takes a length and a distribution of alphabets as parameters. Defaults to 16 characters,
 and a distribution created using the supplied `RNG` class, without passing in `atLeastOneOfEach`.
 
+```typescript
+import { RNG, PasswordGenerator } from '@llftr/password-generator';
+
+const integerGenerator = (min: number, max: number): number => {
+  // Custom implementation
+}
+
+const rng = new RNG(integerGenerator);
+const generator = new PasswordGenerator();
+
+// Basic usage
+const password = generator.generate();
+
+// Supply a custom distribution. Will still use it's constructor supplied RNG for picking characters.
+const customDistribution = rng.generateDistribution(20, generator.getAlphabetCount());
+const otherPassword = generator.generate(20, customDistribution);
+
+// You can even just pass a basic array of numbers. Be careful with this approach, though.
+const dangerous = generator.generate(20, [5, 4, 5, 5]);
+```
+
+In that last example, there's actually a mistake: the element counts don't add up to the length. You should be careful
+when supplying custom distributions. [Here be dragons](#known-limitations).
+
 #### generateWithAllAlphabets(length: number): string
 
 Convenience method which takes only the length (default still 16) and generates a password that is guaranteed to contain
-at least one character of each alphabet. Internally it calls `RNG.generateDistribution()` with `atLeastOneOfEach`.
+at least one character of each alphabet. It calls the supplied `RNG` class' `generateDistribution()` method with
+`atLeastOneOfEach` as true.
 
 ## Are the passwords actually that random, though?
 
