@@ -31,7 +31,7 @@ function generateNonZeroSeeds(totalLength: number, seedCount: number, generator:
   return seeds;
 }
 
-export type IntegerGenerator = (minInclusive: number, maxExclusive: number) => number;
+type IntegerGenerator = (minInclusive: number, maxExclusive: number) => number;
 
 /**
  * Default random number generator. Here for convenience.
@@ -47,7 +47,29 @@ function mathJsIntGenerator(minInclusive: number, maxExclusive: number): number 
   return Math.floor(Math.random() * (maxExclusive - minInclusive)) + minInclusive;
 }
 
-class RNG {
+interface RNGInterface {
+  /**
+   * Generate an integer in the range [minInclusive, maxExclusive).
+   *
+   * @param minInclusive Minimum integer to generate (inclusive).
+   * @param maxExclusive Maximum integer to generate (exclusive).
+   *
+   * @return A number x, where minInclusive <= x < maxExclusive.
+   */
+  generateInteger(minInclusive: number, maxExclusive: number): number;
+
+  /**
+   * Given a total length and the number of elements to select from, returns an array containing the counts for each
+   * element, totaling the length.
+   *
+   * @param totalLength The sum of all the counts.
+   * @param elementCount The number of elements to generate counts for.
+   * @param atLeastOneOfEach Whether all counts should be greater than 0.
+   */
+  generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach): number[];
+}
+
+class RNG implements RNGInterface {
   /**
    *
    * @param generator A random integer generator function. Defaults to a convenience function. Should be replaced with something better.
@@ -62,7 +84,7 @@ class RNG {
    *
    * @return A number x, where minInclusive <= x < maxExclusive.
    */
-  public generateInteger(minInclusive: number, maxExclusive: number): number {
+  generateInteger(minInclusive: number, maxExclusive: number): number {
     return this.generator(minInclusive, maxExclusive);
   }
 
@@ -74,7 +96,7 @@ class RNG {
    * @param elementCount The number of elements to generate counts for.
    * @param atLeastOneOfEach Whether all counts should be greater than 0.
    */
-  public generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[] {
+  generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach = false): number[] {
     // Create "seeds" for the following process
     const seeds = atLeastOneOfEach ?
       generateNonZeroSeeds(totalLength, elementCount - 1, this.generator) :
@@ -98,4 +120,5 @@ class RNG {
   }
 }
 
-export { mathJsIntGenerator, RNG };
+export type { IntegerGenerator };
+export { mathJsIntGenerator, RNGInterface, RNG };
