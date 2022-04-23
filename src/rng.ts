@@ -66,7 +66,7 @@ interface RNGInterface {
    * @param elementCount The number of elements to generate counts for.
    * @param atLeastOneOfEach Whether all counts should be greater than 0.
    */
-  generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach): number[];
+  generateDistribution(totalLength: number, elementCount: number, atLeastOneOfEach: boolean): number[];
 }
 
 class RNG implements RNGInterface {
