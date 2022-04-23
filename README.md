@@ -161,7 +161,7 @@ at least one character of each alphabet. Internally it calls `RNG.generateDistri
 ## Are the passwords actually that random, though?
 
 Yes. Well, good enough. The tests I created include a uniqueness test that does 10000 rounds of generation and checks
-for duplicates. In all th times I've run it, no duplicates have been found. As a goof, I decided to do a 500000
+for duplicates. In all the times I've run it, no duplicates have been found. As a goof, I decided to do a 500000
 (half a million) rounds run. It took close to 10 minutes to do all the tests, but no duplicates were found.
 
 Keep in mind this was done using the with default `Math.random()` implementation, so even in its plum stock
