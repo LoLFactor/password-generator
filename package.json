@@ -58,5 +58,8 @@
       "cobertura",
       "text"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

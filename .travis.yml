@@ -7,8 +7,9 @@ after_success:
   - chmod +x codecov
   - ./codecov -t ${CODECOV_TOKEN}
 deploy:
-  edge: true
   provider: npm
+  email: "$NPM_EMAIL"
+  api_key: "$NPM_API_TOKEN"
   on:
     branch: master
     tags: true
